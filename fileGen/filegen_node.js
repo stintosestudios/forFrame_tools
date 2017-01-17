@@ -3,18 +3,18 @@ fs = require('fs');
 
 var build = function () {
 
-    console.log('before_generate.js: Ready to build source files');
+    console.log('filegen.js: Ready to build source files');
 
     fs.writeFile('./source/gif/test.txt', 'Okay so that worked', function (err) {
 
         if (err) {
 
-            console.log('before_generate.js: error writing a file.');
-            console.log(err);
+            console.log('filegen.js: error writing a file.');
+            ifFail(err);
 
         } else {
 
-            console.log('before_generate.js: test file create.');
+            console.log('filegen.js: test file create.');
 
         }
 
@@ -33,12 +33,12 @@ makeDir = function (root, dir, done, fail) {
     }
 
     // do we have the GIF path?
-    if (!fs.existsSync(root + dir)) {
+    if (!fs.existsSync(path)) {
 
         console.log('filegen.js: ' + path + ' folder does not exist.');
 
         // then make it
-        fs.mkdir(root + dir, function (err) {
+        fs.mkdir(path, function (err) {
 
             if (err) {
 
@@ -66,7 +66,7 @@ makeDir = function (root, dir, done, fail) {
 
 ifFail = function (err) {
 
-    console.log('filegen.js: oh no's we failed!');
+    console.log('filegen.js: oh no\'s we failed!');
     console.log(err);
 
 };
@@ -76,9 +76,10 @@ github.call(function (repos, repoNames) {
 
     makeDir('./', 'source', function () {
 
-        makeDir('./source', 'git', function () {
+        makeDir('./source', 'gif', function () {
 
-            console.log('filgen.js: all is well with the path');
+            console.log('filgen.js: all is well with the path, building...');
+            build();
 
         }, ifFail);
 
