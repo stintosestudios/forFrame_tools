@@ -104,8 +104,17 @@ github.call(function (repos, repoNames) {
 
         makeDir('./source', 'gif', function () {
 
-            console.log('filgen.js: all is well with the path, building...');
-            build(repoNames);
+            console.log('filegen.js: all is well with the path, building...');
+
+            if (repoNames.length > 0) {
+
+                build(repoNames);
+
+            } else {
+
+                console.log('filegen.js: we do not have any repoNames!');
+
+            }
 
         }, ifFail);
 
