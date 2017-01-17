@@ -1,24 +1,50 @@
 var github = require('./github.js'),
 fs = require('fs');
 
-var build = function () {
+var build = function (repoNames) {
 
     console.log('filegen.js: Ready to build source files');
 
-    fs.writeFile('./source/gif/test.txt', 'Okay so that worked', function (err) {
+    var fi = 0,
 
-        if (err) {
+    writeDone = function () {
 
-            console.log('filegen.js: error writing a file.');
-            ifFail(err);
+        console.log('filegen.js: file writing done');
 
-        } else {
+    },
 
-            console.log('filegen.js: test file create.');
+    writeNext = function () {
 
-        }
+        fs.writeFile('./source/gif/' + repoNames[fi][0] + '.txt', 'Okay so that worked', function (err) {
 
-    });
+            if (err) {
+
+                console.log('filegen.js: error writing file for ' + repoNames[fi][0] + '.');
+                ifFail(err);
+
+            } else {
+
+                console.log('filegen.js: ' + repoNames[fi][0] + ' file create.');
+
+                fi += 1;
+
+                if (fi < repoNames.length) {
+
+                    writeNext();
+
+                } else {
+
+                    writeDone();
+
+                }
+
+            }
+
+        });
+
+    };
+
+    writeNext();
 
 },
 
@@ -79,7 +105,7 @@ github.call(function (repos, repoNames) {
         makeDir('./source', 'gif', function () {
 
             console.log('filgen.js: all is well with the path, building...');
-            build();
+            build(repoNames);
 
         }, ifFail);
 
