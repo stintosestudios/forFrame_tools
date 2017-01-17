@@ -1,6 +1,6 @@
 var github = require('./github.js'),
 fs = require('fs'),
-
+os = require('os'),
 token = '';
 
 if (process.argv[2]) {
@@ -23,7 +23,29 @@ var build = function (repoNames) {
 
     writeNext = function () {
 
-        fs.writeFile('./source/gif/' + repoNames[fi][0] + '.txt', 'Okay so that worked', function (err) {
+        var projects = '',
+        text = '';
+
+        repoNames[fi][2].forEach(function (project, index, names) {
+
+            projects += project;
+
+            if (index < names.length - 1) {
+
+                projects += ';';
+
+            }
+
+        });
+
+        console.log('filegen.js: projectNames: ' + projects);
+
+        text = '---' + os.EOL +
+            'title: ' + repoNames[fi][0] + ' GIF collection' + os.EOL +
+            'layout: page' + os.EOL +
+            '---' + os.EOL + os.EOL;
+
+        fs.writeFile('./source/gif/' + repoNames[fi][0] + '.md', text, function (err) {
 
             if (err) {
 

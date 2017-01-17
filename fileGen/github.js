@@ -177,9 +177,6 @@ exports.call = function (done, accessToken) {
 
         console.log('github.js: call done');
 
-        console.log('reponames:');
-        console.log(repoNames);
-
         done(repos, repoNames);
 
     });
