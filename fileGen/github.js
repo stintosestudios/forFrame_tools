@@ -163,9 +163,15 @@ start = function (done) {
 
 };
 
-exports.call = function (done) {
+exports.call = function (done, accessToken) {
 
     console.log('github.js: A call to github has been made');
+
+    if (accessToken) {
+
+        token = accessToken;
+
+    }
 
     start(function () {
 

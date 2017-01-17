@@ -1,5 +1,13 @@
 var github = require('./github.js'),
-fs = require('fs');
+fs = require('fs'),
+
+token = '';
+
+if (process.argv[2]) {
+
+    token = process.argv[2];
+
+}
 
 var build = function (repoNames) {
 
@@ -120,4 +128,4 @@ github.call(function (repos, repoNames) {
 
     }, ifFail);
 
-});
+}, token);
