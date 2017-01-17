@@ -22,39 +22,66 @@ var build = function () {
 
 },
 
-makeDir = function (done) {
+makeDir = function (root, dir, done, fail) {
+
+    var path = root + dir;
+
+    if (root[root.length - 1] != '/') {
+
+        path = root + '/' + dir;
+
+    }
 
     // do we have the GIF path?
-    if (!fs.existsSync('./source/gif')) {
+    if (!fs.existsSync(root + dir)) {
 
-        console.log('before_generate.js: GIF folder does not exist.');
+        console.log('filegen.js: ' + path + ' folder does not exist.');
 
         // then make it
-        fs.mkdir('./source/gif', function () {
+        fs.mkdir(root + dir, function (err) {
 
-            console.log('before_generate.js: GIF folder created!');
+            if (err) {
 
-            done();
+                fail(err);
+
+            } else {
+
+                console.log('filegen.js: ' + path + ' folder created!');
+
+                done();
+
+            }
 
         });
 
     } else {
 
-        console.log('before_generate.js: GIF folder found, re-building...');
+        console.log('filegen.js: ' + path + ' folder found.');
 
         done();
 
     }
 
+},
+
+ifFail = function (err) {
+
+    console.log('filegen.js: oh no's we failed!');
+    console.log(err);
+
 };
 
 // start by making a call to github
 github.call(function (repos, repoNames) {
-	
-	makeDir(function(){
-		
-		build();
-		
-	});
-	
+
+    makeDir('./', 'source', function () {
+
+        makeDir('./source', 'git', function () {
+
+            console.log('filgen.js: all is well with the path');
+
+        }, ifFail);
+
+    }, ifFail);
+
 });
