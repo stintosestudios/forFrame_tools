@@ -40,10 +40,17 @@ var build = function (repoNames) {
 
         console.log('filegen.js: projectNames: ' + projects);
 
+        // write title
         text = '---' + os.EOL +
             'title: ' + repoNames[fi][0] + ' GIF collection' + os.EOL +
             'layout: page' + os.EOL +
             '---' + os.EOL + os.EOL;
+
+        // write hexo tag call
+
+        text += '{% forframe_thumbs ' +
+        repoNames[fi][0].substr(9, repoNames[fi][0].length) +
+        ' ' + projects + ' %}';
 
         fs.writeFile('./source/gif/' + repoNames[fi][0] + '.md', text, function (err) {
 
