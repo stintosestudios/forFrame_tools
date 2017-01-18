@@ -2,6 +2,10 @@
 
 This is a collection of tools, and prototypes in the works, that help me with my [forFrame.js](https://github.com/stintosestudios/forFrame), and [hexosite_source](https://github.com/stintosestudios/hexo_sitesource) projects. Which is all used to build my [github pages](https://stintosestudios.github.io/) site.
 
+## autogif
+
+This helps make exporting to gif real easy. One problem though is that the gifs are not optimized, so I still need to open them up in gimp to get that done.
+
 ## autolinker
 
 This is my first forframe tool. The goal was to automate the process of making a bunch of links to my forFrame gifs. It uses the github API to make an up to date list of all GIFs. Although I do not use it, autolinker has led to the development of my hexo_markdown, and github tools which I do use.
