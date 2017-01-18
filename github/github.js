@@ -214,6 +214,7 @@ if (!!process.argv[1].match(/github.js$/)) {
 
     exports.call(function (repos, reposNames) {
 
+        log(' called from commandline');
         log(' repoNames:');
         log(reposNames);
 
