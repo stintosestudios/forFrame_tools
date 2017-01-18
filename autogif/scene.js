@@ -12,18 +12,16 @@ scene({
 
     },
 
-	/*
     logo : {
         w : 128,
         h : 56,
         opacity : .4,
         skin : {
-            //imgIndex : 0,
+            imgIndex : 0,
             sw : 128,
             sh : 56
         }
     },
-*/
 
     // define some parts
     parts : [{
