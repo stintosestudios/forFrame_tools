@@ -43,6 +43,50 @@ var autoGif = (function () {
 
     injectFrames = function (playbackObj, maxFrame) {
 
+        var worker;
+
+        if (window.Worker) {
+
+            // tryed doing something with webworker, but I can not pass references
+
+            /*
+            log('Setting up encoder ( webWorker)');
+
+            worker = new Worker('worker_gif.js');
+
+            worker.addEventListener('message', function (e) {
+
+            console.log('Worker said: ', e.data);
+
+            }, false);
+
+            worker.postMessage({
+
+            playbackObj : playbackObj,
+            maxFrame : maxFrame,
+            scene : scene,
+            ctx : document.getElementsByTagName('canvas')[0].getContext('2d')
+
+            }); // Send data to our worker.
+
+             */
+
+            log('Setting up encoder (native)');
+
+            injectFrames_native(playbackObj, maxFrame);
+
+        } else {
+
+            log('Setting up encoder (native)');
+
+            injectFrames_native(playbackObj, maxFrame);
+
+        }
+
+    },
+
+    injectFrames_native = function (playbackObj, maxFrame) {
+
         var frame = 0,
 
         // yes I need a plugin system for forFrame
@@ -106,7 +150,7 @@ var autoGif = (function () {
             ui.style.outline = '1px solid #000000';
             ui.style.width = '640px';
             ui.style.marginTop = '10px';
-           // ui.style.height = '50px';
+            // ui.style.height = '50px';
 
             // inject frames button
             control = document.createElement('input');
@@ -115,8 +159,6 @@ var autoGif = (function () {
             control.style.margin = '10px';
 
             control.addEventListener('click', function (e) {
-
-                log('Setting up encoder.');
 
                 injectFrames(playbackObj, maxFrame);
 

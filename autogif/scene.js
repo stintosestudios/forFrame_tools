@@ -1,5 +1,5 @@
 
-var maxFrame = 10;
+var maxFrame = 50;
 
 scene({
 
