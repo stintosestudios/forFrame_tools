@@ -193,7 +193,7 @@ exports.call = function (done, accessToken) {
 
         if (repoNames.length === 0) {
 
-            log('Empty repoNames array. (maybe give an access token?)');
+            log(' Empty repoNames array. (maybe give an access token?)');
 
         }
 
@@ -214,7 +214,7 @@ if (!!process.argv[1].match(/github.js$/)) {
 
     exports.call(function (repos, reposNames) {
 
-        log(' called from commandline');
+        log(' Called from commandline');
         log(' repoNames:');
         log(reposNames);
 
