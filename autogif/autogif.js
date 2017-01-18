@@ -17,6 +17,22 @@ var autoGif = (function () {
 
     },
 
+    progress = function (frame, maxFrame) {
+
+        var container = document.getElementById('forframe_autogif'),
+
+        percent = frame / maxFrame;
+
+        log(percent + '');
+
+        if (container) {
+
+            disp = document.getElementsByClassName('disp')[0];
+
+        }
+
+    },
+
     injectFrames = function (playbackObj, maxFrame) {
 
         var frame = 0,
@@ -36,7 +52,11 @@ var autoGif = (function () {
             scene.setFrame(frame);
             scene.renderFrame(playbackObj);
             encoder.addFrame(ctx);
+
+            progress(frame, maxFrame);
+
             frame += 1;
+
         }
 
         encoder.finish();
@@ -66,6 +86,7 @@ var autoGif = (function () {
             var ui = document.createElement('div'),
             control;
 
+            ui.id = 'forframe_autogif';
             ui.style.outline = '1px solid #000000';
             ui.style.width = '640px';
             ui.style.marginTop = '10px';
@@ -99,6 +120,11 @@ var autoGif = (function () {
                 makeGif();
 
             });
+            ui.appendChild(control);
+
+            // disp
+            control = document.createElement('div');
+            control.className = 'disp';
             ui.appendChild(control);
 
             document.getElementById(playbackObj.containerId).appendChild(ui);
