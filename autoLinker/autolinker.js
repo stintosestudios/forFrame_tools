@@ -139,39 +139,3 @@ get(userURL + '/repos', function (data) {
     processNext();
 
 }, true);
-
-/*
-// Useing XMLHttpRequest
-var request = new XMLHttpRequest();
-
-// Open a new GET
-//request.open('get', baseUrl + '/repos');
-
-request.open('get', baseUrl);
-
-// What to do with the response
-request.onreadystatechange = function () {
-
-var theType = typeof request.response,
-data;
-
-if (request.readyState === 4) {
-
-// if string assume JSON
-if (theType === 'string') {
-
-data = JSON.parse(request.response);
-
-//console.log(getCollectionNames(data));
-
-console.log(request.response);
-
-}
-
-}
-
-};
-
-// Send
-request.send();
-*/
