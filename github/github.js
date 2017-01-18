@@ -9,7 +9,7 @@ log = function (mess) {
 
     if (typeof mess === 'string') {
 
-        console.log('hexo_markdown: ' + mess);
+        console.log('github: ' + mess);
 
     } else {
 
@@ -66,7 +66,7 @@ get = function (host, path, done, isJSON) {
 
     req.on('error', function (e) {
 
-        console.log('github.js: problem with request: ' + e.message);
+        log(' Problem with request: ' + e.message);
 
     });
 
@@ -179,7 +179,7 @@ start = function (done) {
 
 exports.call = function (done, accessToken) {
 
-    console.log('github.js: A call to github has been made');
+    log(' A call to github has been made');
 
     if (accessToken) {
 
@@ -189,7 +189,13 @@ exports.call = function (done, accessToken) {
 
     start(function () {
 
-        console.log('github.js: call done');
+        log(' Call done');
+
+        if (repoNames.length === 0) {
+
+            log('Empty repoNames array. (maybe give an access token?)');
+
+        }
 
         done(repos, repoNames);
 
@@ -208,8 +214,8 @@ if (!!process.argv[1].match(/github.js$/)) {
 
     exports.call(function (repos, reposNames) {
 
-        console.log('reposNames:');
-        console.log(reposNames);
+        log(' repoNames:');
+        log(reposNames);
 
     }, token);
 
