@@ -31,7 +31,7 @@ If all goes well, a source folder will be generated. Inside the source folder is
 
 ## hexo_tags
 
-This is what is used to generate html based on the markdown files that are built by using hexo_markdown. I just drop this file into my scripts folder of up hexo project's root name space.
+This is what is used to generate html based on the markdown files that are built by using hexo_markdown. I just drop this file into my scripts folder of my hexo project's root name space.
 
 ## github
 
