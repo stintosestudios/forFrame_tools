@@ -17,17 +17,25 @@ var autoGif = (function () {
 
     },
 
-    progress = function (frame, maxFrame) {
+    progress = function (frame, maxFrame, done) {
 
         var container = document.getElementById('forframe_autogif'),
-
+        disp,
         percent = frame / maxFrame;
-
-        log(percent + '');
 
         if (container) {
 
-            disp = document.getElementsByClassName('disp')[0];
+            disp = document.getElementsByClassName('forframe_autogif_progress')[0];
+
+            log(percent + '');
+
+            disp.style.width = Math.floor(percent * 100) + '%';
+
+            done();
+
+        } else {
+
+            done();
 
         }
 
@@ -46,24 +54,32 @@ var autoGif = (function () {
         encoder.setDelay(33);
         encoder.start();
 
-        // inject frames
-        while (frame < maxFrame) {
+        var processNext = function () {
 
             scene.setFrame(frame);
             scene.renderFrame(playbackObj);
             encoder.addFrame(ctx);
 
-            progress(frame, maxFrame);
+            progress(frame, maxFrame, function () {
 
-            frame += 1;
+                if (frame < maxFrame) {
 
-        }
+                    frame += 1;
 
-        encoder.finish();
+                    setTimeout(processNext, 0);
 
-        var binary_gif = encoder.stream().getData();
+                } else {
 
-        log('Encoder ready.');
+                    encoder.finish();
+
+                    log('Encoder ready.');
+                }
+
+            });
+
+        };
+
+        processNext();
 
     },
 
@@ -90,7 +106,7 @@ var autoGif = (function () {
             ui.style.outline = '1px solid #000000';
             ui.style.width = '640px';
             ui.style.marginTop = '10px';
-            ui.style.height = '50px';
+           // ui.style.height = '50px';
 
             // inject frames button
             control = document.createElement('input');
@@ -124,7 +140,10 @@ var autoGif = (function () {
 
             // disp
             control = document.createElement('div');
-            control.className = 'disp';
+            control.className = 'forframe_autogif_progress';
+            control.style.width = '100%';
+            control.style.height = '20px';
+            control.style.background = '#aaffaa';
             ui.appendChild(control);
 
             document.getElementById(playbackObj.containerId).appendChild(ui);
