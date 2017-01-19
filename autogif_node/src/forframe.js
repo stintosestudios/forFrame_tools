@@ -1,6 +1,6 @@
 /*
- *    forFrame.js
- *    Copyright 2016 by stintose studios (GPL v3)
+ *    forFrame.js ( hacked over for forFrame_tools, possible 2.x )
+ *    Copyright 2016, 2017 by stintose studios (GPL v3)
  *    https://github.com/stintosestudios/forFrame
  *
  */
@@ -62,10 +62,12 @@ var scene = (function () {
 
         }
 
-    };
+    },
+
+    plugins = {},
 
     // The Skin Class is used to skin a Part with an image
-    var Skin = function (part, skinOptions) {
+    Skin = function (part, skinOptions) {
 
         var defaults = 'imgIndex:-1;xOffset:0;yOffset:0;sx:0;sy:0;sw:32;sh:32;renderPartBox:0;appendRender:none;'.split(';'),
         i = 0,
@@ -253,21 +255,24 @@ var scene = (function () {
     // making state public
     api.state = state;
 
-    // inject a canvas into the given id
-    api.injectCanvas = function (id) {
+    api.injectPlugin = function (plugObj) {
 
-        state.canvas = document.createElement('canvas');
-        state.ctx = state.canvas.getContext('2d');
+        console.log('new plugin');
+        console.log(plugObj);
 
-        state.canvas.width = state.viewPort.w;
-        state.canvas.height = state.viewPort.h;
+        if (plugObj.name) {
 
-        state.ctx.fillStyle = 'black';
-        state.ctx.fillRect(0, 0, state.canvas.width, state.canvas.height);
+            // just reference for now
+            plugins[plugObj.name] = plugObj;
 
-        document.getElementById(id).appendChild(state.canvas);
+            api[plugObj.name] = function () {
 
-    };
+                plugins[plugObj.name].method.call(state, arguments)
+            };
+
+        }
+
+    },
 
     // inject a User Interface into the element of the given id
     api.injectUI = function (playbackObj) {
