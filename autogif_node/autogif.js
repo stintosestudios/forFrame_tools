@@ -36,7 +36,7 @@ var autoGif = (function () {
 
         };
 
-        xhr.send(JSON.stringify(data));
+        xhr.send(data);
 
     },
 
@@ -108,6 +108,8 @@ var autoGif = (function () {
                     binary_gif = encoder.stream().getData();
                     data_url = 'data:image/gif;base64,' + encode64(binary_gif);
 
+					console.log(data_url);
+					
                     // post the data url to the server
                     post(data_url);
 

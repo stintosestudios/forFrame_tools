@@ -52,15 +52,53 @@ onPost = function (req, res) {
 
     console.log('yes a post');
 
+    var gif = false;
+
+    //var text = '';
+
+    var buffers = [];
+
     req.on('data', function (chunk) {
 
-        console.log(chunk.toString('utf8'));
+        // doing this to see if it is a gif
+        var first = chunk.toString('utf8').substr(0, 6);
+
+        // build up the data
+        //text += chunk.toString('utf8');
+
+        buffers.push(chunk);
+
+        //if (first === 'GIF89a') {
+        if (first === 'data:i') {
+
+            gif = true;
+
+        }
 
     });
 
-    res.writeHead(200);
-    res.write('response');
-    res.end();
+    req.on('end', function () {
+
+        var binary;
+
+        if (gif) {
+
+            binary = Buffer.concat(buffers);
+
+            console.log('writing gif file...');
+            fs.writeFile('test.txt', binary, 'utf8', function () {
+
+                console.log('files done.');
+
+            });
+
+        }
+
+        res.writeHead(200);
+        res.write('isGif: ' + gif);
+        res.end();
+
+    });
 };
 
 http.createServer(function (req, res) {

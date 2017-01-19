@@ -1,5 +1,5 @@
 
-var maxFrame = 10;
+var maxFrame = 5;
 
 scene({
 
@@ -7,8 +7,8 @@ scene({
 
     viewPort : {
 
-        w : 480,
-        h : 360
+        w : 160,
+        h : 90
 
     },
 
