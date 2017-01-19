@@ -50,57 +50,8 @@ onGet = function (req, res) {
 
 onPost = function (req, res) {
 
-    console.log('yes a post');
+    require('./node_scripts/write_gif.js').respondTo(req, res);
 
-    var gif = false;
-
-    //var text = '';
-
-    var buffers = [];
-
-    req.on('data', function (chunk) {
-
-        // doing this to see if it is a gif
-        var first = chunk.toString('utf8').substr(0, 6);
-
-        // build up the data
-        //text += chunk.toString('utf8');
-
-        buffers.push(chunk);
-
-        if (first === '\"GIF89') {
-        //if (first === 'data:i') {
-
-            gif = true;
-
-        }
-
-    });
-
-    req.on('end', function () {
-
-        var binary;
-
-        if (gif) {
-
-            binary = Buffer.concat(buffers);
-
-			binary = JSON.parse(binary);
-			
-            console.log('writing gif file...');
-            fs.writeFile('test.gif', binary, 'binary', function () {
-
-                console.log('files done.');
-
-            });
-
-        }
-
-        res.writeHead(200);
-        res.write('isGif: ' + gif);
-        res.end();
-
-    });
 };
 
 http.createServer(function (req, res) {
