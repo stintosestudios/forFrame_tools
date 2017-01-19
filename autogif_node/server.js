@@ -68,8 +68,8 @@ onPost = function (req, res) {
 
         buffers.push(chunk);
 
-        //if (first === 'GIF89a') {
-        if (first === 'data:i') {
+        if (first === '\"GIF89') {
+        //if (first === 'data:i') {
 
             gif = true;
 
@@ -85,8 +85,10 @@ onPost = function (req, res) {
 
             binary = Buffer.concat(buffers);
 
+			binary = JSON.parse(binary);
+			
             console.log('writing gif file...');
-            fs.writeFile('test.txt', binary, 'utf8', function () {
+            fs.writeFile('test.gif', binary, 'binary', function () {
 
                 console.log('files done.');
 
