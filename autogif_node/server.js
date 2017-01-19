@@ -7,9 +7,9 @@
 
 var http = require("http"),
 fs = require("fs"),
-port = process.argv[2] || 8888;
+port = process.argv[2] || 8888,
 
-http.createServer(function (req, res) {
+onGet = function (req, res) {
 
     var filename = req.url != '/' ? '.' + req.url : 'index.html',
     last = filename.split('/');
@@ -33,8 +33,6 @@ http.createServer(function (req, res) {
     fs.readFile(filename, "binary", function (err, file) {
         if (err) {
 
-            console.log(err);
-
             res.writeHead(500, {
                 "Content-Type" : "text/plain"
             });
@@ -47,6 +45,34 @@ http.createServer(function (req, res) {
         res.write(file, "binary");
         res.end();
     });
+
+},
+
+onPost = function (req, res) {
+
+    console.log('yes a post');
+
+    req.on('data', function (chunk) {
+
+        console.log(chunk.toString('utf8'));
+
+    });
+
+    res.writeHead(200);
+    res.write('response');
+    res.end();
+};
+
+http.createServer(function (req, res) {
+
+    if (req.method === 'GET') {
+
+        onGet(req, res);
+
+    } else {
+
+        onPost(req, res);
+    }
 
 }).listen(parseInt(port, 10));
 
