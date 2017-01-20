@@ -1,21 +1,3 @@
-// inject a canvas into the given id
-
-/*
-scene.injectCanvas = function (id) {
-
-state.canvas = document.createElement('canvas');
-state.ctx = state.canvas.getContext('2d');
-
-state.canvas.width = state.viewPort.w;
-state.canvas.height = state.viewPort.h;
-
-state.ctx.fillStyle = 'black';
-state.ctx.fillRect(0, 0, state.canvas.width, state.canvas.height);
-
-document.getElementById(id).appendChild(state.canvas);
-
-};
- */
 
 scene.injectPlugin({
 
