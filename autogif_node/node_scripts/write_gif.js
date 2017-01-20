@@ -37,19 +37,38 @@ writeGif = function (req, res) {
         // if binary gif data write it.
         if (fromClient.binary_gif) {
 
-            binary_gif = new Buffer(fromClient.binary_gif,'binary');
+            binary_gif = new Buffer(fromClient.binary_gif, 'binary');
 
-            fs.writeFile(fromClient.projectName + '.gif', binary_gif, 'binary', function () {
+            fs.writeFile(fromClient.projectName + '.gif', binary_gif, 'binary', function (err) {
 
-                log('write done.');
+                res.writeHead(200);
+
+                if (err) {
+
+                    log('write err.');
+                    log(err);
+
+                    res.write('ERROR saving gif');
+
+                } else {
+
+                    log('write done.');
+
+                    res.write('GIF saved okay');
+
+                }
+
+                res.end();
 
             });
 
-        }
+        } else {
 
-        res.writeHead(200);
-        res.write('yes now');
-        res.end();
+            res.writeHead(200);
+            res.write('no gif data');
+            res.end();
+
+        }
 
     });
 
@@ -60,59 +79,3 @@ exports.respondTo = function (req, res) {
     writeGif(req, res);
 
 };
-
-/*
-writeGif = function (req,res) {
-
-var gif = false,
-
-buffers = [];
-
-req.on('data', function (chunk) {
-
-// doing this to see if it is a gif
-var first = chunk.toString('utf8').substr(0, 6);
-
-buffers.push(chunk);
-
-if (first === '\"GIF89') {
-
-gif = true;
-
-}
-
-});
-
-req.on('end', function () {
-
-var binary;
-
-if (gif) {
-
-binary = Buffer.concat(buffers);
-
-binary = JSON.parse(binary);
-
-log('writing gif file...');
-fs.writeFile('test.gif', binary, 'binary', function () {
-
-log('write done.');
-
-});
-
-}
-
-res.writeHead(200);
-res.write('isGif: ' + gif);
-res.end();
-
-});
-
-};
-
-exports.respondTo = function (req, res) {
-
-writeGif(req, res);
-
-};
-*/
