@@ -9,6 +9,7 @@ var scene = (function () {
 
     var state = {
 
+        projectName : 'untitled',
         frame : 0,
         maxFrame : 50,
         percentDone : 0,
@@ -176,6 +177,9 @@ var scene = (function () {
             throw new Error('you must define a forFrame method, see the README.');
 
         }
+
+        // projectName
+        state.projectName = options.projectName ? options.projectName: 'untitled';
 
         // default to 50 frames if maxFrame is not given
         state.maxFrame = options.maxFrame ? options.maxFrame : 50;

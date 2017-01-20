@@ -5,9 +5,18 @@ scene.injectPlugin({
 
     method : function (id) {
 
-        console.log('looking good');
-        console.log(id[0]);
+        var container = document.createElement('div'),
+        title = document.createElement('p');
 
+        container.style.background = '#5a5a5a';
+        container.style.padding = '10px';
+        container.style.margin = '10px';
+
+        title.innerHTML = 'forFrame.js injectCanvas plugin - ' + scene.state.projectName;
+
+        container.appendChild(title);
+
+        // the canvase
         this.canvas = document.createElement('canvas');
         this.ctx = this.canvas.getContext('2d');
 
@@ -17,7 +26,9 @@ scene.injectPlugin({
         this.ctx.fillStyle = 'black';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-        document.getElementById(id[0]).appendChild(this.canvas);
+        container.appendChild(this.canvas);
+
+        document.getElementById(id[0]).appendChild(container);
 
     }
 
