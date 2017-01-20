@@ -159,7 +159,7 @@ var autoGif = (function () {
             // inject frames button
             control = document.createElement('input');
             control.type = 'button';
-            control.value = 'injectFrames';
+            control.value = 'save gif to server';
             control.style.margin = '10px';
 
             control.addEventListener('click', function (e) {
@@ -169,20 +169,6 @@ var autoGif = (function () {
             });
             ui.appendChild(control);
 
-            // make gif
-            control = document.createElement('input');
-            control.type = 'button';
-            control.value = 'make gif';
-            control.style.margin = '10px';
-
-            control.addEventListener('click', function (e) {
-
-                log('making gif.');
-
-                makeGif();
-
-            });
-            ui.appendChild(control);
 
             // disp
             control = document.createElement('div');
