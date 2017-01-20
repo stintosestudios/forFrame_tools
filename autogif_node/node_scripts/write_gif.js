@@ -1,13 +1,26 @@
 
 var fs = require('fs');
+makeDir = require('./make_dir.js'),
 
-exports.respondTo = function (req, res) {
+log = function (mess) {
+
+    if (typeof mess === 'string') {
+
+        console.log('write_gif.js: ' + mess);
+
+    } else {
+
+        console.log(mess);
+
+    }
+
+};
+
+writeGif = function (req,res) {
 
     var gif = false,
 
     buffers = [];
-
-    console.log('i am responder');
 
     req.on('data', function (chunk) {
 
@@ -34,10 +47,10 @@ exports.respondTo = function (req, res) {
 
             binary = JSON.parse(binary);
 
-            console.log('writing gif file...');
+            log('writing gif file...');
             fs.writeFile('test.gif', binary, 'binary', function () {
 
-                console.log('files done.');
+                log('write done.');
 
             });
 
@@ -48,5 +61,11 @@ exports.respondTo = function (req, res) {
         res.end();
 
     });
+
+};
+
+exports.respondTo = function (req, res) {
+
+    writeGif(req, res);
 
 };

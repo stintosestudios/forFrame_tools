@@ -1,7 +1,7 @@
 /*
  *  server.js
  *
- *   This just provides a simple static server for the project.
+ *   This is the main server.js for my forFrame.js project.
  *
  */
 

@@ -1,9 +1,11 @@
 
-var maxFrame = 10;
+var maxFrame = 5;
 
 scene({
 
     maxFrame : maxFrame,
+
+    projectName : 'test_project',
 
     viewPort : {
 
@@ -142,7 +144,7 @@ scene.load(
         };
 
         scene.injectUI(playback);
-        autoGif.injectUI(playback,maxFrame);
+        autoGif.injectUI(playback, maxFrame);
 
     }
 

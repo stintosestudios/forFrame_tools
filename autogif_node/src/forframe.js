@@ -255,10 +255,8 @@ var scene = (function () {
     // making state public
     api.state = state;
 
+    // inject plugins
     api.injectPlugin = function (plugObj) {
-
-        console.log('new plugin');
-        console.log(plugObj);
 
         if (plugObj.name) {
 
