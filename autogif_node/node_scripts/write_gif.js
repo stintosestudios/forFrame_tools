@@ -16,39 +16,30 @@ log = function (mess) {
 
 };
 
-writeGif = function (req,res) {
+writeGif = function (req, res) {
 
-    var gif = false,
-
-    buffers = [];
+    var buffers = [];
 
     req.on('data', function (chunk) {
 
-        // doing this to see if it is a gif
-        var first = chunk.toString('utf8').substr(0, 6);
-
         buffers.push(chunk);
-
-        if (first === '\"GIF89') {
-
-            gif = true;
-
-        }
 
     });
 
     req.on('end', function () {
 
-        var binary;
+        var binary = Buffer.concat(buffers),
+        binary_gif,
+        fromClient = JSON.parse(binary.toString('utf8'));
 
-        if (gif) {
+        console.log(fromClient.projectName);
 
-            binary = Buffer.concat(buffers);
+        // if binary gif data write it.
+        if (fromClient.binary_gif) {
 
-            binary = JSON.parse(binary);
+            binary_gif = new Buffer(fromClient.binary_gif,'binary');
 
-            log('writing gif file...');
-            fs.writeFile('test.gif', binary, 'binary', function () {
+            fs.writeFile(fromClient.projectName + '.gif', binary_gif, 'binary', function () {
 
                 log('write done.');
 
@@ -57,7 +48,7 @@ writeGif = function (req,res) {
         }
 
         res.writeHead(200);
-        res.write('isGif: ' + gif);
+        res.write('yes now');
         res.end();
 
     });
@@ -69,3 +60,59 @@ exports.respondTo = function (req, res) {
     writeGif(req, res);
 
 };
+
+/*
+writeGif = function (req,res) {
+
+var gif = false,
+
+buffers = [];
+
+req.on('data', function (chunk) {
+
+// doing this to see if it is a gif
+var first = chunk.toString('utf8').substr(0, 6);
+
+buffers.push(chunk);
+
+if (first === '\"GIF89') {
+
+gif = true;
+
+}
+
+});
+
+req.on('end', function () {
+
+var binary;
+
+if (gif) {
+
+binary = Buffer.concat(buffers);
+
+binary = JSON.parse(binary);
+
+log('writing gif file...');
+fs.writeFile('test.gif', binary, 'binary', function () {
+
+log('write done.');
+
+});
+
+}
+
+res.writeHead(200);
+res.write('isGif: ' + gif);
+res.end();
+
+});
+
+};
+
+exports.respondTo = function (req, res) {
+
+writeGif(req, res);
+
+};
+*/

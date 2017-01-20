@@ -78,6 +78,8 @@ var autoGif = (function () {
 
         var frame = 0,
 
+        toServer,
+
         // yes I need a plugin system for forFrame
         ctx = document.getElementsByTagName('canvas')[0].getContext('2d');
 
@@ -108,11 +110,17 @@ var autoGif = (function () {
                     binary_gif = encoder.stream().getData();
                     data_url = 'data:image/gif;base64,' + encode64(binary_gif);
 
-                    //console.log(binary_gif);
-                    //console.log(JSON.stringify(binary_gif));
+                    toServer = {
+
+                        projectName : scene.state.projectName,
+                        binary_gif : binary_gif
+
+                    },
 
                     // post the data url to the server
-                    post(JSON.stringify(binary_gif));
+                    //post(JSON.stringify(binary_gif));
+
+                    post(JSON.stringify(toServer));
 
                     log('Encoder ready.');
                 }
