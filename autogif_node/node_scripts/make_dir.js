@@ -16,7 +16,7 @@ log = function (mess) {
 };
 
 // make a dir if it is not there
-exports.makeDir = function (root, dir, done, fail) {
+exports.make = function (root, dir, done, fail) {
 
     var path = root + dir;
 

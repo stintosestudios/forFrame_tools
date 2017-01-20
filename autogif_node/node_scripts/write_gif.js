@@ -1,6 +1,6 @@
 
 var fs = require('fs');
-makeDir = require('./make_dir.js'),
+mk = require('./make_dir.js'),
 
 log = function (mess) {
 
@@ -14,7 +14,7 @@ log = function (mess) {
 
     }
 
-};
+},
 
 writeGif = function (req, res) {
 
@@ -34,38 +34,63 @@ writeGif = function (req, res) {
 
         console.log(fromClient.projectName);
 
-        // if binary gif data write it.
-        if (fromClient.binary_gif) {
+        if (fromClient.projectName) {
 
-            binary_gif = new Buffer(fromClient.binary_gif, 'binary');
+            // make the folder for the project if not there
+            mk.make('./projects', fromClient.projectName, function () {
 
-            fs.writeFile(fromClient.projectName + '.gif', binary_gif, 'binary', function (err) {
+                // make the gif folder if not there
+                mk.make('./projects/' + fromClient.projectName, 'gif', function () {
 
-                res.writeHead(200);
+                    // if binary gif data write it.
+                    if (fromClient.binary_gif) {
 
-                if (err) {
+                        binary_gif = new Buffer(fromClient.binary_gif, 'binary');
 
-                    log('write err.');
-                    log(err);
+                        fs.writeFile('./projects/' +
+                            fromClient.projectName + '/gif/' +
+                            'gif_1_480.gif',
 
-                    res.write('ERROR saving gif');
+                            binary_gif,
+                            'binary', function (err) {
 
-                } else {
+                            res.writeHead(200);
 
-                    log('write done.');
+                            if (err) {
 
-                    res.write('GIF saved okay');
+                                log('write err.');
+                                log(err);
 
-                }
+                                res.write('ERROR saving gif');
 
-                res.end();
+                            } else {
+
+                                log('write done.');
+
+                                res.write('GIF saved okay');
+
+                            }
+
+                            res.end();
+
+                        });
+
+                    } else {
+
+                        res.writeHead(200);
+                        res.write('no gif data');
+                        res.end();
+
+                    }
+
+                });
 
             });
 
         } else {
 
             res.writeHead(200);
-            res.write('no gif data');
+            res.write('no projectName');
             res.end();
 
         }
@@ -76,6 +101,11 @@ writeGif = function (req, res) {
 
 exports.respondTo = function (req, res) {
 
-    writeGif(req, res);
+    // make the porjects dir if it is not there.
+    mk.make('./', 'projects', function () {
+
+        writeGif(req, res);
+
+    });
 
 };
