@@ -1,7 +1,8 @@
 
 var fs = require('fs');
 mk = require('./make_dir.js'),
-spawn = require('child_process').spawn;
+spawn = require('child_process').spawn,
+exec = require('child_process').exec,
 
 log = function (mess) {
 
@@ -21,11 +22,27 @@ crunchGif = function (path, filename) {
 
     //note = spawn('notepad.exe', [path]);
 
+
+    // this works in powershell so... your guess is as good as mine.
+    // ./gifsicle.exe --resize 128x_ --colors 256 -O2 first.gif -o text3.gif
+
+
     var gifsicle = spawn('./gifsicle-1.88-win64/gifsicle.exe', [
-                '-O2',
+                '--resize','480x_',
+                '--colors','256',
+                '-O3',
                 path + filename,
                 '-o',
-                path + 'opp_' + filename
+                path + 'gif_1_480.gif'
+            ]);
+
+    spawn('./gifsicle-1.88-win64/gifsicle.exe', [
+                '--resize','320x_',
+                '--colors','256',
+                '-O3',
+                path + filename,
+                '-o',
+                path + 'gif_1_320.gif'
             ]);
 
     gifsicle.stdout.on('data', function (code) {
@@ -99,7 +116,7 @@ writeGif = function (req, res) {
                         path = './projects/' +
                             fromClient.projectName + '/gif/';
 
-                        filename = 'gif_1_' + fromClient.size + '.gif';
+                        filename = 'gif_1_master.gif';
 
                         fs.writeFile(path + filename,
 
