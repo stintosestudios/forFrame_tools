@@ -19,54 +19,41 @@ log = function (mess) {
 
 crunchGif = function (path, filename) {
 
-/*
-    var gifsicle = spawn('./gifsicle-1.88-win64/gifsicle.exe', [
-                '--resize','480x_',
-                '--colors','256',
-                '-O3',
-                path + filename,
-                '-o',
-                path + 'gif_1_480.gif'
-            ]);
-*/
+    var sizes = [480, 320, 240, 150];
 
-var sizes = [480, 320, 240,150];
+    sizes.forEach(function (size) {
 
-sizes.forEach(function(size){
+        var gifsicle = spawn('./gifsicle-1.88-win64/gifsicle.exe', [
+                    '--resize', size + 'x_',
+                    '--colors', '256',
+                    '-O3',
+                    path + filename,
+                    '-o',
+                    path + 'gif_1_' + size + '.gif'
+                ]);
 
-    spawn('./gifsicle-1.88-win64/gifsicle.exe', [
-                '--resize',size+'x_',
-                '--colors','256',
-                '-O3',
-                path + filename,
-                '-o',
-                path + 'gif_1_'+size+'.gif'
-            ]);
+        gifsicle.stdout.on('data', function (code) {
 
-});
+            log('gifsicle:');
+            log(code.toString('utf8'));
 
-/*
-    gifsicle.stdout.on('data', function (code) {
+        });
 
-        log('gifsicle:');
-        log(code.toString('utf8'));
+        gifsicle.stderr.on('data', function (code) {
 
-    });
+            log('gifsicle error:');
+            log(code.toString('utf8'));
 
-    gifsicle.stderr.on('data', function (code) {
+        });
 
-        log('gifsicle error:');
-        log(code.toString('utf8'));
+        gifsicle.on('exit', function (code) {
+
+            log('gifsicle opp gif made.');
+            log(code);
+
+        });
 
     });
-
-    gifsicle.on('exit', function (code) {
-
-        log('gifsicle opp gif made.');
-        log(code);
-
-    });
-*/
 
 },
 
