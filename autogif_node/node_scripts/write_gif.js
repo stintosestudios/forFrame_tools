@@ -1,6 +1,7 @@
 
 var fs = require('fs');
 mk = require('./make_dir.js'),
+spawn = require('child_process').spawn;
 
 log = function (mess) {
 
@@ -13,6 +14,51 @@ log = function (mess) {
         console.log(mess);
 
     }
+
+},
+
+crunchGif = function (path, filename) {
+
+    //note = spawn('notepad.exe', [path]);
+
+    var gifsicle = spawn('./gifsicle-1.88-win64/gifsicle.exe', [
+                '-O2',
+                path + filename,
+                '-o',
+                path + 'opp_' + filename
+            ]);
+
+    gifsicle.stdout.on('data', function (code) {
+
+        log('gifsicle:');
+        log(code.toString('utf8'));
+
+    });
+
+    gifsicle.stderr.on('data', function (code) {
+
+        log('gifsicle error:');
+        log(code.toString('utf8'));
+
+    });
+
+    gifsicle.on('exit', function (code) {
+
+        log('gifsicle opp gif made.');
+        log(code);
+
+    });
+
+    /*
+    var gifsicle = spawn('./gifsicle-1.88-win64/gifsicle.exe', [
+    '-O2',
+    '-resize 128x_',
+    path + filename,
+    '-o',
+    path + 'resize_' + filename
+    ]);
+
+     */
 
 },
 
@@ -30,6 +76,7 @@ writeGif = function (req, res) {
 
         var binary = Buffer.concat(buffers),
         binary_gif,
+        path,
         fromClient = JSON.parse(binary.toString('utf8'));
 
         log('saving data for project : ' + fromClient.projectName);
@@ -49,9 +96,12 @@ writeGif = function (req, res) {
 
                         log('saving gif...');
 
-                        fs.writeFile('./projects/' +
-                            fromClient.projectName + '/gif/' +
-                            'gif_1_'+fromClient.size+'.gif',
+                        path = './projects/' +
+                            fromClient.projectName + '/gif/';
+
+                        filename = 'gif_1_' + fromClient.size + '.gif';
+
+                        fs.writeFile(path + filename,
 
                             binary_gif,
                             'binary', function (err) {
@@ -70,6 +120,8 @@ writeGif = function (req, res) {
                                 log('write done.');
 
                                 res.write('GIF saved okay');
+
+                                crunchGif(path, filename);
 
                             }
 
