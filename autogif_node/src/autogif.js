@@ -150,6 +150,7 @@ var autoGif = (function () {
 
                     toServer = {
 
+                        script : 'write_gif',
                         projectName : scene.state.projectName,
                         size : size,
                         binary_gif : binary_gif

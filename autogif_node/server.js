@@ -50,8 +50,11 @@ onGet = function (req, res) {
 
 onPost = function (req, res) {
 
-    require('./node_scripts/write_gif.js').respondTo(req, res);
+    //require('./node_scripts/write_gif.js').respondTo(req, res);
 
+	require('./node_scripts/responder.js').respondTo(req, res);
+
+	
 };
 
 http.createServer(function (req, res) {

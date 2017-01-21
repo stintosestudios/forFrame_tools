@@ -57,104 +57,83 @@ crunchGif = function (path, filename) {
 
 },
 
-writeGif = function (req, res) {
+writeGif = function (json, done, fail) {
 
-    var buffers = [];
+    var binary_gif,
+    path,
+    filename;
 
-    req.on('data', function (chunk) {
+    // if binary gif data write it.
+    if (json.binary_gif) {
 
-        buffers.push(chunk);
+        binary_gif = new Buffer(json.binary_gif, 'binary');
 
-    });
+        log('saving gif...');
 
-    req.on('end', function () {
+        path = './projects/' + json.projectName + '/gif/';
 
-        var binary = Buffer.concat(buffers),
-        binary_gif,
-        path,
-        fromClient = JSON.parse(binary.toString('utf8'));
+        filename = 'gif_1_master.gif';
 
-        log('saving data for project : ' + fromClient.projectName);
+        fs.writeFile(path + filename,
 
-        if (fromClient.projectName) {
+            binary_gif,
+            'binary', function (err) {
 
-            // make the folder for the project if not there
-            mk.make('./projects', fromClient.projectName, function () {
+            if (err) {
 
-                // make the gif folder if not there
-                mk.make('./projects/' + fromClient.projectName, 'gif', function () {
+                log('write err.');
+                log(err);
 
-                    // if binary gif data write it.
-                    if (fromClient.binary_gif) {
+                done('ERROR saving gif');
 
-                        binary_gif = new Buffer(fromClient.binary_gif, 'binary');
+            } else {
 
-                        log('saving gif...');
+                log('write done.');
 
-                        path = './projects/' +
-                            fromClient.projectName + '/gif/';
+                done('GIF saved okay');
 
-                        filename = 'gif_1_master.gif';
+                crunchGif(path, filename);
 
-                        fs.writeFile(path + filename,
+            }
 
-                            binary_gif,
-                            'binary', function (err) {
+        });
 
-                            res.writeHead(200);
+    } else {
 
-                            if (err) {
+        fail('write_gif: no binary data');
 
-                                log('write err.');
-                                log(err);
+    }
 
-                                res.write('ERROR saving gif');
+};
 
-                            } else {
+exports.call = function (json, done, fail) {
 
-                                log('write done.');
+    if (json.projectName) {
 
-                                res.write('GIF saved okay');
+        // make the folder for the project if not there
+        mk.make('./projects', json.projectName, function () {
 
-                                crunchGif(path, filename);
+            // make the gif folder if not there
+            mk.make('./projects/' + json.projectName, 'gif', function () {
 
-                            }
+                writeGif(json, function (mess) {
 
-                            res.end();
+                    done(mess);
 
-                        });
+                }, function (mess) {
 
-                    } else {
-
-                        res.writeHead(200);
-                        res.write('no gif data');
-                        res.end();
-
-                    }
+                    fail(mess);
 
                 });
 
             });
 
-        } else {
+        });
 
-            res.writeHead(200);
-            res.write('no projectName');
-            res.end();
+    } else {
 
-        }
+        fail('write_gif: no project name');
 
-    });
-
-};
-
-exports.respondTo = function (req, res) {
-
-    // make the porjects dir if it is not there.
-    mk.make('./', 'projects', function () {
-
-        writeGif(req, res);
-
-    });
+    }
 
 };
