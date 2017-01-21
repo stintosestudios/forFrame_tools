@@ -78,11 +78,13 @@ var autoGif = (function () {
 
         var frame = 0,
 
-        size = 640,
+        size = 128,
         toServer,
         scaledH,
         nativeW,
         nativeH,
+
+        size = Number(document.getElementById('autogif_size').value);
 
         // yes I need a plugin system for forFrame
         //ctx = document.getElementsByTagName('canvas')[0].getContext('2d');
@@ -204,6 +206,17 @@ var autoGif = (function () {
                 injectFrames(playbackObj, maxFrame);
 
             });
+            ui.appendChild(control);
+
+            // set size
+            control = document.createElement('span');
+            control.innerHTML = 'size:';
+            ui.appendChild(control);
+
+            control = document.createElement('input');
+            control.type = 'text';
+            control.id = 'autogif_size';
+            control.value = '480';
             ui.appendChild(control);
 
             // disp
