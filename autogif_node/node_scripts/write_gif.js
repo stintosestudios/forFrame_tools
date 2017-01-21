@@ -2,7 +2,6 @@
 var fs = require('fs');
 mk = require('./make_dir.js'),
 spawn = require('child_process').spawn,
-exec = require('child_process').exec,
 
 log = function (mess) {
 
@@ -20,13 +19,7 @@ log = function (mess) {
 
 crunchGif = function (path, filename) {
 
-    //note = spawn('notepad.exe', [path]);
-
-
-    // this works in powershell so... your guess is as good as mine.
-    // ./gifsicle.exe --resize 128x_ --colors 256 -O2 first.gif -o text3.gif
-
-
+/*
     var gifsicle = spawn('./gifsicle-1.88-win64/gifsicle.exe', [
                 '--resize','480x_',
                 '--colors','256',
@@ -35,16 +28,24 @@ crunchGif = function (path, filename) {
                 '-o',
                 path + 'gif_1_480.gif'
             ]);
+*/
+
+var sizes = [480, 320, 240,150];
+
+sizes.forEach(function(size){
 
     spawn('./gifsicle-1.88-win64/gifsicle.exe', [
-                '--resize','320x_',
+                '--resize',size+'x_',
                 '--colors','256',
                 '-O3',
                 path + filename,
                 '-o',
-                path + 'gif_1_320.gif'
+                path + 'gif_1_'+size+'.gif'
             ]);
 
+});
+
+/*
     gifsicle.stdout.on('data', function (code) {
 
         log('gifsicle:');
@@ -65,17 +66,7 @@ crunchGif = function (path, filename) {
         log(code);
 
     });
-
-    /*
-    var gifsicle = spawn('./gifsicle-1.88-win64/gifsicle.exe', [
-    '-O2',
-    '-resize 128x_',
-    path + filename,
-    '-o',
-    path + 'resize_' + filename
-    ]);
-
-     */
+*/
 
 },
 
