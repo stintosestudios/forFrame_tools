@@ -21,8 +21,8 @@ scene.injectPlugin({
         appendZ = scope[0].appendZ === undefined ? Object.keys(state.parts).length - 1 : scope[0].appendZ;
 
         // clear canvas.
-        state.ctx.fillStyle = 'black';
-        state.ctx.fillRect(0, 0, state.canvas.width, state.canvas.height);
+        //state.ctx.fillStyle = 'black';
+        //state.ctx.fillRect(0, 0, state.canvas.width, state.canvas.height);
 
         // ALERT! a for in loop!? NO!
         for (prop in state.parts) {

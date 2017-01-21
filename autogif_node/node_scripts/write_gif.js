@@ -32,7 +32,7 @@ writeGif = function (req, res) {
         binary_gif,
         fromClient = JSON.parse(binary.toString('utf8'));
 
-        console.log(fromClient.projectName);
+        log('saving data for project : ' + fromClient.projectName);
 
         if (fromClient.projectName) {
 
@@ -47,9 +47,11 @@ writeGif = function (req, res) {
 
                         binary_gif = new Buffer(fromClient.binary_gif, 'binary');
 
+                        log('saving gif...');
+
                         fs.writeFile('./projects/' +
                             fromClient.projectName + '/gif/' +
-                            'gif_1_480.gif',
+                            'gif_1_'+fromClient.size+'.gif',
 
                             binary_gif,
                             'binary', function (err) {

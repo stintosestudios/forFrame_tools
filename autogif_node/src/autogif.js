@@ -78,10 +78,32 @@ var autoGif = (function () {
 
         var frame = 0,
 
+        size = 128,
         toServer,
+        scaledH,
 
         // yes I need a plugin system for forFrame
-        ctx = document.getElementsByTagName('canvas')[0].getContext('2d');
+        //ctx = document.getElementsByTagName('canvas')[0].getContext('2d');
+
+        canvas = scene.state.canvas,
+        ctx = scene.state.ctx;
+
+        log('native canvas size: ' + canvas.width + ',' + canvas.height);
+
+        scaledH = Math.floor(canvas.height / canvas.width * size);
+
+        //canvas.style.width = size+'px';
+        //canvas.style.height = scaledH+'px';
+
+        //canvas.width = size;
+        //canvas.height = scaledH;
+
+        //ctx.scale(size / canvas.width,scaledH / canvas.height);
+        canvas.width = size;
+        canvas.height = scaledH;
+        ctx.scale(size / 480, scaledH / 360);
+
+        log('scaled canvas size: ' + size + ',' + scaledH);
 
         // set up the encoder
         encoder = new GIFEncoder();
@@ -92,7 +114,12 @@ var autoGif = (function () {
         var processNext = function () {
 
             scene.setFrame(frame);
+
+            ctx.fillStyle = 'black';
+            ctx.fillRect(0, 0, 480, 360);
+
             scene.renderFrame(playbackObj);
+
             encoder.addFrame(ctx);
 
             progress(frame, maxFrame, function () {
@@ -113,6 +140,7 @@ var autoGif = (function () {
                     toServer = {
 
                         projectName : scene.state.projectName,
+                        size : size,
                         binary_gif : binary_gif
 
                     },
@@ -168,7 +196,6 @@ var autoGif = (function () {
 
             });
             ui.appendChild(control);
-
 
             // disp
             control = document.createElement('div');
