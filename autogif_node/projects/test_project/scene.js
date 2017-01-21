@@ -126,7 +126,7 @@ scene.injectCanvas('apparea');
 
 scene.load(
     [
-        'img/mylogo_128.png'
+        '../mylogo_128.png'
     ],
     function (progress) {
 
