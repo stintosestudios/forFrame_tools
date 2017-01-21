@@ -6,6 +6,12 @@ This is a collection of tools, and prototypes in the works, that help me with my
 
 This helps make exporting to gif real easy. One problem though is that the gifs are not optimized, so I still need to open them up in gimp to get that done.
 
+## autogif_node
+
+This tool that I put together not only helps with generating a gif, It also transmits the gif to a node server system that writes it to the file system. In addition it places the gif in a forFrame collection tree (/projects/[projectName]/gif), and if the path is not there it creates it. It also makes use of a command line program called gifsicle which is used to instantly create a bunch of different resolutions of the gif, that are also optimized.
+
+This tool also contains a hacked over version of forFrame 1.5.x that may lead to forFrame 2.x. This forFrame hack job introduces a plug-in system that I will want to have with forFrame.
+
 ## autolinker
 
 This is my first forframe tool. The goal was to automate the process of making a bunch of links to my forFrame gifs. It uses the github API to make an up to date list of all GIFs. Although I do not use it, autolinker has led to the development of my hexo_markdown, and github tools which I do use.

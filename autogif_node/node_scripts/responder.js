@@ -15,8 +15,6 @@ exports.respondTo = function (req, res) {
         var binary = Buffer.concat(buffers),
         json = JSON.parse(binary.toString('utf8'));
 
-        //console.log(fromClient.projectName)
-
         require('./' + json.script + '.js').call(json, function (mess) {
 
             res.writeHead(200);
