@@ -10,27 +10,36 @@ scene.injectPlugin({
         state = this,
         pt,
         z = 0,
+        playbackObj = scope[0],
         ctx = state.ctx,
         appendZ,
         disp;
 
-        if (scope[0] === undefined) {
-            scope[0] = {};
+        if (playbackObj === undefined) {
+            playbackObj = {};
         }
 
-        appendZ = scope[0].appendZ === undefined ? Object.keys(state.parts).length - 1 : scope[0].appendZ;
+        appendZ = playbackObj.appendZ === undefined ? Object.keys(state.parts).length - 1 : playbackObj.appendZ;
 
         // clear canvas.
-        //state.ctx.fillStyle = 'black';
-        //state.ctx.fillRect(0, 0, state.canvas.width, state.canvas.height);
+        if (playbackObj.drawBackground) {
+
+            playbackObj.drawBackground(state.ctx);
+
+        } else {
+
+            state.ctx.fillStyle = 'black';
+            state.ctx.fillRect(0, 0, state.canvas.width, state.canvas.height);
+
+        }
 
         // ALERT! a for in loop!? NO!
         for (prop in state.parts) {
 
             // append render?
-            if (scope[0].appendRender && z === appendZ) {
+            if (playbackObj.appendRender && z === appendZ) {
 
-                scope[0].appendRender.call(state, ctx);
+                playbackObj.appendRender.call(state, ctx);
 
             }
 

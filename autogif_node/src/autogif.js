@@ -78,9 +78,11 @@ var autoGif = (function () {
 
         var frame = 0,
 
-        size = 128,
+        size = 640,
         toServer,
         scaledH,
+        nativeW,
+        nativeH,
 
         // yes I need a plugin system for forFrame
         //ctx = document.getElementsByTagName('canvas')[0].getContext('2d');
@@ -98,10 +100,13 @@ var autoGif = (function () {
         //canvas.width = size;
         //canvas.height = scaledH;
 
+        nativeW = canvas.width;
+        nativeH = canvas.height;
+
         //ctx.scale(size / canvas.width,scaledH / canvas.height);
         canvas.width = size;
         canvas.height = scaledH;
-        ctx.scale(size / 480, scaledH / 360);
+        ctx.scale(size / nativeW, scaledH / nativeH);
 
         log('scaled canvas size: ' + size + ',' + scaledH);
 
@@ -111,12 +116,16 @@ var autoGif = (function () {
         encoder.setDelay(33);
         encoder.start();
 
+        playbackObj.drawBackground = function (ctx) {
+
+            ctx.fillStyle = 'black';
+            ctx.fillRect(0, 0, nativeW, nativeH);
+
+        };
+
         var processNext = function () {
 
             scene.setFrame(frame);
-
-            ctx.fillStyle = 'black';
-            ctx.fillRect(0, 0, 480, 360);
 
             scene.renderFrame(playbackObj);
 
