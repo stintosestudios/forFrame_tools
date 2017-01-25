@@ -88,10 +88,10 @@ hexo.extend.tag.register('forframe_collection_link', function (args) {
     var html = '',
     collectionName = args[0],
     projectName = args[1],
-    projectUrl = baseUrl + 'forFrame_' + collectionName + '/master/projects/' + projectName + '/',
+    projectUrl = baseUrl + collectionName + '/master/projects/' + projectName + '/',
     thumUrl = projectUrl + 'thum_128.png';
 
-    return '<a class="forframe_collection_link" href="' + gifUrl + '">'+ 
+    return '<a class="forframe_collection_link" href="/forframe/'+collectionName+'.html">'+ 
         '<img class=\"forframe_thumb_img\" src="' + thumUrl + 
     '"></a>'
 
