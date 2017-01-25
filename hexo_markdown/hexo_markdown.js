@@ -66,7 +66,7 @@ var build = function (repoNames) {
         repoNames[fi][0].substr(9, repoNames[fi][0].length) +
         ' ' + projects + ' %}';
 
-        fs.writeFile('./source/gif/' + repoNames[fi][0] + '.md', text, function (err) {
+        fs.writeFile('./source/forframe/' + repoNames[fi][0] + '.md', text, function (err) {
 
             if (err) {
 
@@ -153,7 +153,7 @@ github.call(function (repos, repoNames) {
 
     makeDir('./', 'source', function () {
 
-        makeDir('./source', 'gif', function () {
+        makeDir('./source', 'forframe', function () {
 
             log(' all is well with the path, building...');
 
