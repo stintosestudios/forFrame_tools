@@ -36,7 +36,11 @@ var buildIndex = function (repoNames, done) {
     // links to collection files
     repoNames.forEach(function (repo) {
 
-        text += '<a href=\"/forframe/' + repo[0] + '.html\">' + repo[0] + '<\/a>'+os.EOL;
+        // make link here
+        //text += '<a href=\"/forframe/' + repo[0] + '.html\">' + repo[0] + '<\/a>' + os.EOL;
+
+        // use hexo tag
+        text += '{% forframe_collection_link ' + repo[0] + ' ' + repo[2][repo[2].length - 1] + ' %}' + os.EOL;
 
     });
 
