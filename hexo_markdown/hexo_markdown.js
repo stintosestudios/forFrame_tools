@@ -23,15 +23,41 @@ var log = function (mess) {
 
 };
 
+var buildIndex = function (repoNames, done) {
+
+    log('building index.md...');
+
+    // write header
+    text = '---' + os.EOL +
+        'title: forFrame collection index.' + os.EOL +
+        'layout: page' + os.EOL +
+        '---' + os.EOL + os.EOL;
+
+    // links to collection files
+    repoNames.forEach(function (repo) {
+
+        text += '<a href=\"/forframe/' + repo[0] + '.html\">' + repo[0] + '<\/a>'+os.EOL;
+
+    });
+
+    fs.writeFile('./source/forframe/index.md', text, function (err) {
+
+        log('index.md wrote.');
+        done();
+
+    });
+
+};
+
 var build = function (repoNames) {
 
-    log(' Ready to build source files');
+    log('Ready to build source files');
 
     var fi = 0,
 
     writeDone = function () {
 
-        log(' file writing done');
+        log('build done.');
 
     },
 
@@ -52,7 +78,7 @@ var build = function (repoNames) {
 
         });
 
-        log(' projectNames: ' + projects);
+        log('projectNames: ' + projects);
 
         // write title
         text = '---' + os.EOL +
@@ -70,12 +96,12 @@ var build = function (repoNames) {
 
             if (err) {
 
-                log(' error writing file for ' + repoNames[fi][0] + '.');
+                log('error writing file for ' + repoNames[fi][0] + '.');
                 ifFail(err);
 
             } else {
 
-                log(' ' + repoNames[fi][0] + ' file create.');
+                log(repoNames[fi][0] + ' file create.');
 
                 fi += 1;
 
@@ -85,7 +111,12 @@ var build = function (repoNames) {
 
                 } else {
 
-                    writeDone();
+                    // building of collecton files is now done, build/update the index.
+                    buildIndex(repoNames, function () {
+
+                        writeDone();
+
+                    });
 
                 }
 
@@ -112,7 +143,7 @@ makeDir = function (root, dir, done, fail) {
     // do we have the GIF path?
     if (!fs.existsSync(path)) {
 
-        log(' ' + path + ' folder does not exist.');
+        log(' ' + path + 'folder does not exist.');
 
         // then make it
         fs.mkdir(path, function (err) {
@@ -123,7 +154,7 @@ makeDir = function (root, dir, done, fail) {
 
             } else {
 
-                log(' ' + path + ' folder created!');
+                log(path + ' folder created!');
 
                 done();
 
@@ -133,7 +164,7 @@ makeDir = function (root, dir, done, fail) {
 
     } else {
 
-        log(' ' + path + ' folder found.');
+        log(path + ' folder found.');
 
         done();
 
@@ -143,7 +174,7 @@ makeDir = function (root, dir, done, fail) {
 
 ifFail = function (err) {
 
-    log(' oh no\'s we failed!');
+    log('oh no\'s we failed!');
     log(err);
 
 };
@@ -155,7 +186,7 @@ github.call(function (repos, repoNames) {
 
         makeDir('./source', 'forframe', function () {
 
-            log(' all is well with the path, building...');
+            log('all is well with the path, building...');
 
             if (repoNames.length > 0) {
 
@@ -163,7 +194,7 @@ github.call(function (repos, repoNames) {
 
             } else {
 
-                log(' we do not have any repoNames!');
+                log('we do not have any repoNames!');
 
             }
 

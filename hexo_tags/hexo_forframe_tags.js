@@ -66,10 +66,33 @@ hexo.extend.tag.register('forframe_thumbs', function (args) {
         thumUrl = projectUrl + 'thum_128.png';
         gifUrl = projectUrl + 'gif/gif_1_' + size + '.gif';
 
-        html += '<a class="forframe_thumb_link" href="' + gifUrl + '"><img class=\"forframe_thumb_img\" src="' + thumUrl + '"></a>'
+        html += '<a class="forframe_thumb_link" href="' + gifUrl + '"><img class=\"forframe_thumb_img\" src="' + thumUrl + '"></a>';
 
     });
 
     return html + '<\/div>';
+
+});
+
+/*
+ *    forframe_collection_link
+ *
+ *    A link to a collection (used in /forframe/index.md)
+ *
+ *    {% forframe_collection_link collection_1_0_42 chicken %}
+ *
+ */
+
+hexo.extend.tag.register('forframe_collection_link', function (args) {
+
+    var html = '',
+    collectionName = args[0],
+    projectName = args[1],
+    projectUrl = baseUrl + 'forFrame_' + collectionName + '/master/projects/' + projectName + '/',
+    thumUrl = projectUrl + 'thum_128.png';
+
+    return '<a class="forframe_collection_link" href="' + gifUrl + '">'+ 
+        '<img class=\"forframe_thumb_img\" src="' + thumUrl + 
+    '"></a>'
 
 });
